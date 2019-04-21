@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Modal from "./components/Modal";
 import axios from "axios";
 
 class App extends Component {
@@ -6,6 +7,11 @@ class App extends Component {
     super(props);
     this.state = {
       viewCompleted: false,
+      activeItem: {
+        title: "",
+        description: "",
+        completed: false
+      },
       todoList: []
     };
   }
@@ -71,11 +77,30 @@ class App extends Component {
       </li>
     ));
   };
+  toggle = () => {
+    this.setState({ modal: !this.state.modal });
+  };
+  handleSubmit = item => {
+    this.toggle();
+    if (item.id) {
+      axios
+        .put(`http://localhost:8000/api/todos/${item.id}/`, item)
+        .then(res => this.refreshList());
+      return;
+    }
+    axios
+      .post("http://localhost:8000/api/todos/", item)
+      .then(res => this.refreshList());
+  };
+  createItem = () => {
+    const item = { title: "", description: "", completed: false };
+    this.setState({ activeItem: item, modal: !this.state.modal });
+  };
   handleDelete = item => {
     axios
       .delete(`http://localhost:8000/api/todos/${item.id}`)
       .then(res => this.refreshList());
-  }
+  };
   render() {
     return (
       <main className="content">
@@ -84,7 +109,9 @@ class App extends Component {
           <div className="col-md-6 col-sm-10 mx-auto p-0">
             <div className="card p-3">
               <div className="">
-                <button className="btn btn-primary">Add task</button>
+                <button onClick={this.createItem} className="btn btn-primary">
+                  Add task
+                </button>
               </div>
               {this.renderTabList()}
               <ul className="list-group list-group-flush">
@@ -93,6 +120,13 @@ class App extends Component {
             </div>
           </div>
         </div>
+        {this.state.modal ? (
+           <Modal
+             activeItem={this.state.activeItem}
+             toggle={this.toggle}
+             onSave={this.handleSubmit}
+           />
+         ) : null}
       </main>
     );
   }
