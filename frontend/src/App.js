@@ -68,7 +68,9 @@ class App extends Component {
         </span>
         <span>
           <button 
-            className="btn btn-secondary mr-2"> Edit </button>
+            onClick={() => this.editItem(item)}
+            className="btn btn-secondary mr-2"> Edit 
+          </button>
           <button
             onClick={() => this.handleDelete(item)}
             className="btn btn-danger">Delete 
@@ -96,6 +98,9 @@ class App extends Component {
     const item = { title: "", description: "", completed: false };
     this.setState({ activeItem: item, modal: !this.state.modal });
   };
+  editItem = (item) => {
+    this.setState({activeItem: item, modal: !this.state.modal})
+  }
   handleDelete = item => {
     axios
       .delete(`http://localhost:8000/api/todos/${item.id}`)
