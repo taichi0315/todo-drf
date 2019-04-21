@@ -63,11 +63,19 @@ class App extends Component {
         <span>
           <button 
             className="btn btn-secondary mr-2"> Edit </button>
-          <button className="btn btn-danger">Delete </button>
+          <button
+            onClick={() => this.handleDelete(item)}
+            className="btn btn-danger">Delete 
+          </button>
         </span>
       </li>
     ));
   };
+  handleDelete = item => {
+    axios
+      .delete(`http://localhost:8000/api/todos/${item.id}`)
+      .then(res => this.refreshList());
+  }
   render() {
     return (
       <main className="content">
