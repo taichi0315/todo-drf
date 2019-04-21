@@ -61,7 +61,8 @@ class App extends Component {
           {item.title}
         </span>
         <span>
-          <button className="btn btn-secondary mr-2"> Edit </button>
+          <button 
+            className="btn btn-secondary mr-2"> Edit </button>
           <button className="btn btn-danger">Delete </button>
         </span>
       </li>
