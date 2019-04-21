@@ -5,4 +5,4 @@ class TodoAdmin(admin.ModelAdmin):
     list_display = ('title', 'description', 'completed', 'created_at')
 
 
-admin.site.register(Todo, TodoAdmin) 
+admin.site.register(Todo, TodoAdmin)
